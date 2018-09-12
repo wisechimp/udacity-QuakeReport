@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EarthquakesJsonQuery {
 
@@ -57,7 +59,11 @@ public class EarthquakesJsonQuery {
 
                 String earthquakeMagnitude = JSONEarthquakeProperties.optString("mag");
                 String earthquakeLocation = JSONEarthquakeProperties.optString("place");
-                String earthquakeTime = JSONEarthquakeProperties.optString("time");
+
+                long timeInMilliseconds = JSONEarthquakeProperties.optLong("time");
+                Date date = new Date(timeInMilliseconds);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+                String earthquakeTime = dateFormat.format(date);
 
                 earthquakes.add(new EarthquakesData(earthquakeMagnitude, earthquakeLocation, earthquakeTime));
             }
