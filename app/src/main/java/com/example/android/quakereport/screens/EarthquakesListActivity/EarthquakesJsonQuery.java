@@ -62,8 +62,8 @@ public class EarthquakesJsonQuery {
 
                 long timeInMilliseconds = JSONEarthquakeProperties.optLong("time");
                 Date date = new Date(timeInMilliseconds);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
-                String earthquakeTime = dateFormat.format(date);
+
+                String earthquakeTime = formatDate(date)+ "\n" +formatTime(date);
 
                 earthquakes.add(new EarthquakesData(earthquakeMagnitude, earthquakeLocation, earthquakeTime));
             }
@@ -77,5 +77,15 @@ public class EarthquakesJsonQuery {
 
         // Return the list of earthquakes
         return earthquakes;
+    }
+
+    private static String formatDate(Date dateObject){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        return dateFormat.format(dateObject);
+    }
+
+    private static String formatTime(Date dateObject){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        return timeFormat.format(dateObject);
     }
 }
