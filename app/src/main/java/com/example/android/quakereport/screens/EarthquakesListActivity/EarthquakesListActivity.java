@@ -35,13 +35,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
         setContentView(R.layout.earthquake_activity);
 
         // Create an ArrayList of EarthquakesData objects
-        ArrayList<EarthquakesData> earthquakesData = new ArrayList<>();
-        earthquakesData.add(new EarthquakesData("7.2", "San Francisco", "Feb 2, 2016"));
-        earthquakesData.add(new EarthquakesData("6.1", "London", "July 20, 2015"));
-        earthquakesData.add(new EarthquakesData("3.9", "Tokyo", "Nov 10, 2014"));
-        earthquakesData.add(new EarthquakesData("5.4", "Mexico City", "May 3, 2014"));
-        earthquakesData.add(new EarthquakesData("2.8", "Moscow", "Jan 31, 2013"));
-        earthquakesData.add(new EarthquakesData("4.9", "Rio de Janeiro", "Aug 19, 2012"));
+        ArrayList<EarthquakesData> earthquakesData = EarthquakesJsonQuery.extractEarthquakes();
 
         // Create an {@link EarthquakesDataAdapter}, whose data source is a list of
         // {@link EarthquakesData}s. The adapter knows how to create list item views for each item
