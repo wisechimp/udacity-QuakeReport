@@ -1,4 +1,4 @@
-package com.example.android.quakereport.screens.EarthquakesListActivity;
+package com.example.android.quakereport.screens.earthquakesListActivity;
 
 import android.util.Log;
 
@@ -6,9 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class EarthquakesJsonQuery {
 
@@ -57,15 +55,15 @@ public class EarthquakesJsonQuery {
                 JSONObject JSONEarthquakeObject = jsonFeaturesArray.getJSONObject(i);
                 JSONObject JSONEarthquakeProperties = JSONEarthquakeObject.getJSONObject("properties");
 
-                String earthquakeMagnitude = JSONEarthquakeProperties.optString("mag");
-                String earthquakeLocation = JSONEarthquakeProperties.optString("place");
+                Double earthquakeMagnitudeDouble = JSONEarthquakeProperties.optDouble("mag");
 
-                long timeInMilliseconds = JSONEarthquakeProperties.optLong("time");
-                Date date = new Date(timeInMilliseconds);
+                String completeLocation = JSONEarthquakeProperties.optString("place");
 
-                String earthquakeTime = formatDate(date)+ "\n" +formatTime(date);
+                long earthquakeTimeInMilliseconds = JSONEarthquakeProperties.optLong("time");
 
-                earthquakes.add(new EarthquakesData(earthquakeMagnitude, earthquakeLocation, earthquakeTime));
+                String earthquakeUrl = JSONEarthquakeProperties.optString("url");
+
+                earthquakes.add(new EarthquakesData(earthquakeMagnitudeDouble, completeLocation, earthquakeTimeInMilliseconds, earthquakeUrl));
             }
 
         } catch (JSONException e) {
@@ -77,15 +75,5 @@ public class EarthquakesJsonQuery {
 
         // Return the list of earthquakes
         return earthquakes;
-    }
-
-    private static String formatDate(Date dateObject){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
-        return dateFormat.format(dateObject);
-    }
-
-    private static String formatTime(Date dateObject){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-        return timeFormat.format(dateObject);
     }
 }
