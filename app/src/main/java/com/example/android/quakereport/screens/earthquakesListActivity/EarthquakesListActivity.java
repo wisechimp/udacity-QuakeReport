@@ -17,7 +17,10 @@ package com.example.android.quakereport.screens.earthquakesListActivity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.android.quakereport.R;
 import com.example.android.quakereport.screens.earthquakeWebView.EarthquakeDetailActivity;
@@ -41,6 +45,17 @@ public class EarthquakesListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
         final ProgressBar loadingProgress = findViewById(R.id.loading_spinner);
+        final TextView errorMessageTV = findViewById(R.id.emptyListText);
+
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected){
+            errorMessageTV.setText("No internet connection");
+        }
+
 
         //Reference the View Model
         EarthquakesListViewModel viewModel = ViewModelProviders.of(this).get(EarthquakesListViewModel.class);
@@ -60,7 +75,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
                     adapter.addAll(earthquakes);
                 }
                 adapter.notifyDataSetChanged();
-                listView.setEmptyView(findViewById(R.id.emptyListText));
+                listView.setEmptyView(errorMessageTV);
                 loadingProgress.setVisibility(View.INVISIBLE);
                 Log.i("mEarData", "onChanged: " + String.valueOf(mEarthquakesData.size()));
             }
