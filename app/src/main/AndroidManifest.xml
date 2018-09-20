@@ -33,6 +33,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.earthquakeWebView.EarthquakeDetailActivity" />
+        <activity
+            android:name=".screens.earthquakeSettings.EarthquakesSettings"
+            android:label="@string/settings_title">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.android.quakereport.screens.earthquakesListActivity.EarthquakesListActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

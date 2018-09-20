@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.quakereport.R;
+import com.example.android.quakereport.screens.earthquakeSettings.EarthquakesSettings;
 import com.example.android.quakereport.screens.earthquakeWebView.EarthquakeDetailActivity;
 
 import java.util.ArrayList;
@@ -90,4 +93,21 @@ public class EarthquakesListActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, EarthquakesSettings.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
