@@ -19,9 +19,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -41,12 +44,14 @@ import java.util.ArrayList;
 
 public class EarthquakesListActivity extends AppCompatActivity {
 
+    private final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
     private ArrayList<EarthquakesData> mEarthquakesData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+        preferredEarthquakesRequesrURL();
         final ProgressBar loadingProgress = findViewById(R.id.loading_spinner);
         final TextView errorMessageTV = findViewById(R.id.emptyListText);
 
@@ -109,5 +114,23 @@ public class EarthquakesListActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String preferredEarthquakesRequesrURL() {
+        String url;
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPrefs.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+        Uri baseUri = Uri.parse(USGS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", "10");
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderby", "time");
+        url = uriBuilder.toString();
+        Log.i("Preferred string", "preferredEarthquakesRequesrURL: " + "is " + url);
+        return url;
     }
 }
