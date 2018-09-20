@@ -89,7 +89,8 @@ public class EarthquakesListAdapter extends ArrayAdapter<EarthquakesData> {
     }
 
     private static String formatDate(Date dateObject){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM DD, yyyy");
+        //dd is day in month, DD is day in year
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
         return dateFormat.format(dateObject);
     }
 

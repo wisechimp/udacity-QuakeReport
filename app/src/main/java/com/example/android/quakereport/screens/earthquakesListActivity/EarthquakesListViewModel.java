@@ -23,10 +23,11 @@ public class EarthquakesListViewModel extends AndroidViewModel {
 
     public EarthquakesListViewModel(@NonNull Application application) {
         super(application);
-
+        EarthquakesDataRequest task = new EarthquakesDataRequest();
+        task.execute("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10");
     }
 
-    public static class EarthquakesDataRequest extends AsyncTask<String, Void, ArrayList<EarthquakesData>> {
+    private static class EarthquakesDataRequest extends AsyncTask<String, Void, ArrayList<EarthquakesData>> {
 
         @Override
         protected ArrayList<EarthquakesData> doInBackground(String... strings) {
@@ -52,7 +53,6 @@ public class EarthquakesListViewModel extends AndroidViewModel {
         protected void onPostExecute(ArrayList<EarthquakesData> earthquakesData) {
             super.onPostExecute(earthquakesData);
             mEarthquakesData.setValue(earthquakesData);
-            setmEarthquakesData(mEarthquakesData);
             Log.i("Are we thru?", "onPostExecute: " + String.valueOf(mEarthquakesData.getValue()));
         }
     }
@@ -73,6 +73,7 @@ public class EarthquakesListViewModel extends AndroidViewModel {
      */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
+        Log.i("The request", "makeHttpRequest: " + "has been made!");
 
         if (url == null){
             return jsonResponse;
@@ -133,7 +134,5 @@ public class EarthquakesListViewModel extends AndroidViewModel {
         return mEarthquakesData;
     }
 
-    private static void setmEarthquakesData(MutableLiveData<ArrayList<EarthquakesData>> mEarthquakesData) {
-        EarthquakesListViewModel.mEarthquakesData = mEarthquakesData;
-    }
 }
+

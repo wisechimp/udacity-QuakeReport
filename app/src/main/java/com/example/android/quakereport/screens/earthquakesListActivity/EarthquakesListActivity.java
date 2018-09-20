@@ -25,28 +25,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.example.android.quakereport.R;
 import com.example.android.quakereport.screens.earthquakeWebView.EarthquakeDetailActivity;
-import com.example.android.quakereport.screens.earthquakesListActivity.EarthquakesListViewModel.EarthquakesDataRequest;
 
 import java.util.ArrayList;
 
 public class EarthquakesListActivity extends AppCompatActivity {
 
-    private static final String earthquakesDataUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private ArrayList<EarthquakesData> mEarthquakesData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
+        final ProgressBar loadingProgress = findViewById(R.id.loading_spinner);
 
         //Reference the View Model
         EarthquakesListViewModel viewModel = ViewModelProviders.of(this).get(EarthquakesListViewModel.class);
-        // Start the AsyncTask to fetch the earthquake data
-        EarthquakesDataRequest task = new EarthquakesDataRequest();
-        task.execute(earthquakesDataUrl);
 
         final EarthquakesListAdapter adapter = new EarthquakesListAdapter(this, mEarthquakesData);
         Log.i("Init mEarDat", String.valueOf(mEarthquakesData.size()));
@@ -64,6 +61,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
                 listView.setEmptyView(findViewById(R.id.emptyListText));
+                loadingProgress.setVisibility(View.INVISIBLE);
                 Log.i("mEarData", "onChanged: " + String.valueOf(mEarthquakesData.size()));
             }
         });
