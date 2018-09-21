@@ -1,3 +1,9 @@
+The starting point of this repository is cloned from Udacity's Android Basics: Networking course and their ReadMe is included below.
+
+The course predates ViewModels and LiveData but I decided to incorporated these instead rather than learn about Loaders which have been deprecated now! My solution is therefore a little more relevant to current (at the time of typing!) Android architecture.
+
+
+
 Quake Report App
 ===================================
 
