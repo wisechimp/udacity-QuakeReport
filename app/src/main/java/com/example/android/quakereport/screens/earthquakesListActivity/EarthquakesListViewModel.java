@@ -21,10 +21,10 @@ public class EarthquakesListViewModel extends AndroidViewModel {
 
     private static MutableLiveData<ArrayList<EarthquakesData>> mEarthquakesData = new MutableLiveData<>();
 
-    public EarthquakesListViewModel(@NonNull Application application) {
+    public EarthquakesListViewModel(@NonNull Application application, String string) {
         super(application);
         EarthquakesDataRequest task = new EarthquakesDataRequest();
-        task.execute("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10");
+        task.execute(string);
     }
 
     private static class EarthquakesDataRequest extends AsyncTask<String, Void, ArrayList<EarthquakesData>> {

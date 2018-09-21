@@ -51,7 +51,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
-        preferredEarthquakesRequesrURL();
+        String preferredSearch = preferredEarthquakesRequesrURL();
         final ProgressBar loadingProgress = findViewById(R.id.loading_spinner);
         final TextView errorMessageTV = findViewById(R.id.emptyListText);
 
@@ -66,7 +66,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
 
 
         //Reference the View Model
-        EarthquakesListViewModel viewModel = ViewModelProviders.of(this).get(EarthquakesListViewModel.class);
+        EarthquakesListViewModel viewModel = ViewModelProviders.of(this, new EarthquakesListViewModelFactory(this.getApplication(), preferredSearch)).get(EarthquakesListViewModel.class);
 
         final EarthquakesListAdapter adapter = new EarthquakesListAdapter(this, mEarthquakesData);
         Log.i("Init mEarDat", String.valueOf(mEarthquakesData.size()));
@@ -80,6 +80,7 @@ public class EarthquakesListActivity extends AppCompatActivity {
             public void onChanged(@Nullable final ArrayList<EarthquakesData> earthquakes) {
                 mEarthquakesData = earthquakes;
                 if (earthquakes != null) {
+                    adapter.clear();
                     adapter.addAll(earthquakes);
                 }
                 adapter.notifyDataSetChanged();
